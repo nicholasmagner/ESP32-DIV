@@ -4525,7 +4525,7 @@ void setup() {
 
   tft.fillScreen(TFT_BLACK);
 
-  loading(100, UI_ICON, 0, 0, 2, true);
+  playStartupAnimation();
 
   tft.fillScreen(TFT_BLACK);
   displayLogo(TFT_WHITE, 500);

@@ -12,6 +12,7 @@
 #include "gps.h"
 #include "shared.h"
 #include "utils.h"
+#include "StartupAssets.h"
 
 
 bool notificationVisible = false;
@@ -1238,6 +1239,22 @@ void loading(int frameDelay, uint16_t color, int16_t x, int16_t y, int repeats, 
   }
 }
 
+void playStartupAnimation() {
+  const int16_t x = (tft.width() - 100) / 2;
+  const int16_t y = (tft.height() - 120) / 2;
+  for (uint8_t i = 0; i < 10; ++i) {
+    tft.fillRect(x, y, 100, 120, TFT_BLACK);
+    tft.drawBitmap(x, y, skullFrames[i], 100, 120, TFT_WHITE);
+    // Split long holds so the scheduler can run throughout boot.
+    uint16_t remaining = skullDurations[i];
+    while (remaining > 0) {
+      const uint16_t slice = remaining > 100 ? 100 : remaining;
+      delay(slice);
+      remaining -= slice;
+    }
+  }
+}
+
 void displayLogo(uint16_t color, int displayTime) {
   int16_t bitmapWidth = 150;
   int16_t bitmapHeight = 150;
@@ -1247,7 +1264,10 @@ void displayLogo(uint16_t color, int displayTime) {
   int16_t logoY = (screenHeight - bitmapHeight) / 2 - 20;
 
   tft.fillRect(logoX, logoY, bitmapWidth, bitmapHeight, TFT_BLACK);
-  tft.drawBitmap(logoX, logoY, bitmap_icon_cifer, bitmapWidth, bitmapHeight, color);
+  const bool previousSwap = tft.getSwapBytes();
+  tft.setSwapBytes(true);
+  tft.pushImage(logoX, logoY, bitmapWidth, bitmapHeight, libertyLogo);
+  tft.setSwapBytes(previousSwap);
 
   tft.setTextColor(color);
   tft.setTextFont(1);

@@ -99,6 +99,7 @@ void notificationRedrawIfVisible();
 NotificationAction notificationHandleTouch(int x, int y);
 void printWrappedText(int x, int y, int maxWidth, const char* text);
 void loading(int frameDelay, uint16_t color, int16_t x, int16_t y, int repeats, bool center);
+void playStartupAnimation();
 void displayLogo(uint16_t color, int displayTime);
 void initSDCard();
 

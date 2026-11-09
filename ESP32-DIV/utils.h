@@ -36,6 +36,8 @@ void restoreSdAfterSharedSpi();
 void reclaimSharedSpiBus();
 /** Hold SD CS high and set a CC1101-safe SPI rate on the shared bus. */
 void holdSdInactiveOnSharedSpi();
+/** Release the V2 SD peripheral/pinmux before PN532 software SPI takes over. */
+void preparePn532SoftwareSpi();
 void drawStatusBar(float batteryVoltage, bool forceUpdate = false, bool bottomSeparator = false);
 void startStatusBarTask();
 /** Request a status bar pass on the next update (e.g. after SD or ward state changes). */

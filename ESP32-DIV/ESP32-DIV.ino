@@ -3683,7 +3683,7 @@ static void otherRfidReturnGuard() {
 static void otherRfidPlaceholderAction(int idx) {
     feature_active = true;
     if (!RfidNfc::begin()) {
-        showNotification("RFID/NFC", "PN532 not found. Check SPI wiring/pins.");
+        showNotification("RFID/NFC", "PN532 init failed. Check SPI mode and wiring.");
         otherDismissPlaceholder();
         feature_active = false;
         return;

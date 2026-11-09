@@ -1114,6 +1114,24 @@ void holdSdInactiveOnSharedSpi() {
 #endif
 }
 
+void preparePn532SoftwareSpi() {
+#if BOARD_HAS_ESP32S3 && !TOUCH_SHARES_TFT_SPI
+  SD.end();
+  s_sdFsMounted = false;
+  sdReleaseOtherChipSelects();
+  pinMode(SD_CS, OUTPUT);
+  digitalWrite(SD_CS, HIGH);
+  SPI.end();
+  // V2 PN532 data directions differ from SD. Remove the hardware SPI
+  // routing before Adafruit_SPIDevice configures these as bitbang GPIOs.
+  gpio_reset_pin((gpio_num_t)PN532_SCK);
+  gpio_reset_pin((gpio_num_t)PN532_MISO);
+  gpio_reset_pin((gpio_num_t)PN532_MOSI);
+  pinMode(PN532_SS, OUTPUT);
+  digitalWrite(PN532_SS, HIGH);
+#endif
+}
+
 void reclaimSharedSpiBus() {
   // Reset pinmux after RFID bitbang / Scanner remaps, but do NOT SD.begin().
   // Mounting SD here is what broke SubGHz: SD.begin raises SPI clock and parks

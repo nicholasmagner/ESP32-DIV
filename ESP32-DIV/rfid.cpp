@@ -45,8 +45,9 @@ static void rfidAttachBus() {
   // SPI.begin(PN532_*) here: on DIV V2 the PN532 MOSI/MISO pins are swapped
   // vs the SD/CC1101 bus, and remapping hardware SPI that way leaves the SD
   // card dead until something else (e.g. SubGHz) re-inits the bus correctly.
+  preparePn532SoftwareSpi();
+  s_nfc.begin();
   if (s_hwOk) {
-    s_nfc.begin();
     s_nfc.SAMConfig();
     s_nfc.setPassiveActivationRetries(0xFF);
   }
@@ -1566,15 +1567,18 @@ bool begin() {
     return true;
   }
   rfidAttachBus();
-  s_nfc.begin();
   uint32_t ver = s_nfc.getFirmwareVersion();
   if (!ver) {
     rfidPn532VerStr(0);
     restoreSdAfterSharedSpi();
     return false;
   }
+  if (!s_nfc.SAMConfig()) {
+    rfidPn532VerStr(0);
+    restoreSdAfterSharedSpi();
+    return false;
+  }
   rfidPn532VerStr(ver);
-  s_nfc.SAMConfig();
   s_nfc.setPassiveActivationRetries(0xFF);
   s_hwOk = true;
   restoreSdAfterSharedSpi();

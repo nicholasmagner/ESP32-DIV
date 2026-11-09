@@ -183,6 +183,8 @@ ESP32-DIV is an open-source, multi-band wireless toolkit built on the **ESP32-S3
 <!-- Hardware Overview --> 
 ## 🔧 Hardware Overview
 
+For PN532 RFID/NFC on V2, see the [wiring and detection guide](docs/PN532-V2-WIRING.md).
+
 ESP32DIV consists of two boards:
 
 ### 🧠 Main Board

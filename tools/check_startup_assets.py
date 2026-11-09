@@ -27,9 +27,9 @@ stored = re.search(r'skullDurations\[10\] = \{(.*?)\}', s)[1]
 assert list(map(int, stored.split(','))) == durations
 logo = Image.open(root / 'assets/startup/liberty.png').convert('RGBA')
 bg = Image.new('RGBA', logo.size, (0,0,0,255)); bg.alpha_composite(logo)
-logo = ImageOps.contain(bg.convert('RGB'), (150,150), Image.Resampling.LANCZOS)
-canvas = Image.new('RGB', (150,150)); canvas.paste(logo, ((150-logo.width)//2,(150-logo.height)//2))
-encoded = values('libertyLogo'); assert len(encoded) == 22500
+logo = ImageOps.contain(bg.convert('RGB'), (240,300), Image.Resampling.LANCZOS)
+canvas = Image.new('RGB', (240,300)); canvas.paste(logo, ((240-logo.width)//2,(300-logo.height)//2))
+encoded = values('libertyLogo'); assert len(encoded) == 72000
 for index, (r,g,b) in enumerate(canvas.getdata()):
     assert encoded[index] == ((r>>3)<<11 | (g>>2)<<5 | b>>3)
 print('PASS: every animation pixel, timing, row padding and RGB565 logo pixel matches source.')

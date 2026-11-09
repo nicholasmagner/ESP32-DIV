@@ -1256,39 +1256,29 @@ void playStartupAnimation() {
 }
 
 void displayLogo(uint16_t color, int displayTime) {
-  int16_t bitmapWidth = 150;
-  int16_t bitmapHeight = 150;
-  int16_t screenWidth = tft.width();
-  int16_t screenHeight = tft.height();
-  int16_t logoX = (screenWidth - bitmapWidth) / 2;
-  int16_t logoY = (screenHeight - bitmapHeight) / 2 - 20;
+  constexpr int16_t bitmapWidth = 240;
+  constexpr int16_t bitmapHeight = 300;
+  constexpr int16_t footerHeight = 20;
+  const int16_t screenWidth = tft.width();
+  const int16_t screenHeight = tft.height();
+  const int16_t logoX = (screenWidth - bitmapWidth) / 2;
+  const int16_t logoY = (screenHeight - footerHeight - bitmapHeight) / 2;
 
-  tft.fillRect(logoX, logoY, bitmapWidth, bitmapHeight, TFT_BLACK);
+  tft.fillScreen(TFT_BLACK);
   const bool previousSwap = tft.getSwapBytes();
   tft.setSwapBytes(true);
   tft.pushImage(logoX, logoY, bitmapWidth, bitmapHeight, libertyLogo);
   tft.setSwapBytes(previousSwap);
 
+  // Keep the credits and version in a compact footer below the full-size art.
   tft.setTextColor(color);
   tft.setTextFont(1);
-
-  tft.setTextSize(2);
-  int16_t textX = screenWidth / 3.5;
-  int16_t textY = logoY + bitmapHeight + 10;
-  tft.setCursor(textX, textY);
-  tftPrintObf(OBF_PN, sizeof(OBF_PN));
-
   tft.setTextSize(1);
-  textX = screenWidth / 3.5;
-  textY += 20;
-  tft.setCursor(textX, textY);
-  tft.print("by ");
+  tft.setCursor(8, screenHeight - footerHeight + 2);
+  tftPrintObf(OBF_PN, sizeof(OBF_PN));
+  tft.print(" by ");
   tftPrintObf(OBF_DN, sizeof(OBF_DN));
-
-  textX = screenWidth / 2.5;
-  textY += 50;
-  tft.setCursor(textX, textY);
-  // Version is intentionally NOT obfuscated.
+  tft.setCursor(8, screenHeight - 8);
   tft.print(ESP32DIV_VERSION);
 
   Serial.println("==================================");

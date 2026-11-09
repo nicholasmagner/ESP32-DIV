@@ -37,9 +37,9 @@ parts.append('const uint16_t skullDurations[10] = {' + ', '.join(map(str, durati
 source = Image.open(ASSETS / 'liberty.png').convert('RGBA')
 background = Image.new('RGBA', source.size, (0, 0, 0, 255))
 background.alpha_composite(source)
-logo = ImageOps.contain(background.convert('RGB'), (150, 150), Image.Resampling.LANCZOS)
-canvas = Image.new('RGB', (150, 150), 'black')
-canvas.paste(logo, ((150-logo.width)//2, (150-logo.height)//2))
+logo = ImageOps.contain(background.convert('RGB'), (240, 300), Image.Resampling.LANCZOS)
+canvas = Image.new('RGB', (240, 300), 'black')
+canvas.paste(logo, ((240-logo.width)//2, (300-logo.height)//2))
 values = [((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3) for r,g,b in canvas.getdata()]
 parts.append(array('libertyLogo', values, 'uint16_t', 12))
 (OUT / 'StartupAssets.cpp').write_text('\n'.join(parts))
@@ -47,6 +47,6 @@ parts.append(array('libertyLogo', values, 'uint16_t', 12))
 #include <Arduino.h>
 extern const uint8_t* const skullFrames[10];
 extern const uint16_t skullDurations[10];
-extern const uint16_t libertyLogo[150 * 150] PROGMEM;
+extern const uint16_t libertyLogo[240 * 300] PROGMEM;
 ''')
-print(f'Generated 10 frames ({sum(durations)} ms) and 150x150 RGB565 logo.')
+print(f'Generated 10 frames ({sum(durations)} ms) and 240x300 RGB565 logo.')
